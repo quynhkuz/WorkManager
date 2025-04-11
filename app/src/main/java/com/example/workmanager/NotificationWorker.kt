@@ -15,14 +15,19 @@ import java.util.concurrent.TimeUnit
 class NotificationWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
+
     override fun doWork(): Result {
         showNotification("Hello", "Đây là thông báo từ WorkManager time ${System.currentTimeMillis()}!")
-        Log.e("AAA","Đây là thông báo từ WorkManager")
+        val s = System.currentTimeMillis() - MyApplication.t
+        Log.e("AAA","Đây là thông báo từ WorkManager ${s}")
+
         runWorkManager()
         return Result.success()
     }
 
     private fun runWorkManager() {
+        MyApplication.t = System.currentTimeMillis()
+        Log.e("AAA","time ${MyApplication.t}")
         val workRequest = OneTimeWorkRequestBuilder<NotificationWorker>()
             .setInitialDelay(15, TimeUnit.SECONDS) // Trì hoãn 10s
             .build()
